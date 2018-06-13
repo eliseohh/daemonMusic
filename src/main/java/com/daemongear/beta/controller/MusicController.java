@@ -31,7 +31,7 @@ public class MusicController {
         urlBody.setDownloaded(false);
 
         if (urlServices.ytUrlIsValid(urlBody.getUrl())) {
-            if (urlServices.generateFile(urlBody.getUrl())) {
+            if (urlServices.downloadFile(urlBody.getUrl()) && !urlDAO.existsByUrl(urlBody.getUrl())) {
                 urlDAO.save(urlBody);
                 return new ResponseEntity(HttpStatus.OK);
             } else {

@@ -2,10 +2,10 @@ package com.daemongear.beta.service;
 
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,28 +25,24 @@ public class UrlServices {
         return false;
     }
 
-    public boolean generateFile(String url) throws FileNotFoundException {
+    public boolean downloadFile(String url) throws IOException {
 
         final String OS = System.getProperty("os.name").toLowerCase();
+        final String ytCMD, formatCon, path;
+        Path pathl = Paths.get(String.format("%s/%s", System.getProperty("user.home"), "daemonMusic"));
+        Runtime rt = Runtime.getRuntime();
+        path = String.format("%s/%s",System.getProperty("user.home"),"daemonMusic");
+        Process proc;
 
-        File file = null;
+        ytCMD = "youtube-dl -x --audio-format mp3";
+        formatCon = String.format("%s %s",ytCMD , url);
 
-        if (OS.contains("win")) {
-            file = new File("c:/%HOMEPATH%/output.bat") ;
-        } else {
-            file = new File("$HOME/music/output.sh");
+        if (!Files.exists(pathl)) {
+            new File(path).mkdir();
         }
 
-        FileOutputStream fos = new FileOutputStream(file);
-        if (fos.equals(null) ) {
-            throw new FileNotFoundException("output file not found");
-        } else {
-            PrintStream ps = new PrintStream(fos);
-            System.setOut(ps);
-            System.out.println("youtube-dl  " + url);
+        proc = rt.exec(formatCon,null,new File(String.format("%s/%s",System.getProperty("user.home"),"daemonMusic")));
 
-            return true;
-        }
+        return true;
     }
-
 }

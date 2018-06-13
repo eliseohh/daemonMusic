@@ -4,4 +4,5 @@ import com.daemongear.beta.dto.UrlBody;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UrlDAO extends CrudRepository<UrlBody, Long> {
+    boolean existsByUrl(String url);
 }
