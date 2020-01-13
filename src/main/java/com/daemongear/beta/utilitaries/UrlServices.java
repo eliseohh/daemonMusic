@@ -1,6 +1,4 @@
-package com.daemongear.beta.service;
-
-import org.springframework.stereotype.Service;
+package com.daemongear.beta.utilitaries;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -9,10 +7,9 @@ import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Service
 public class UrlServices {
 
-    public boolean ytUrlIsValid(String url){
+    public synchronized static boolean ytUrlIsValid(String url){
 
         Pattern p = Pattern.compile("^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)(\\S+)?$");
 
@@ -25,9 +22,8 @@ public class UrlServices {
         return false;
     }
 
-    public boolean downloadFile(String url) throws IOException {
+    public synchronized static boolean downloadFile(String url) throws IOException {
 
-        final String OS = System.getProperty("os.name").toLowerCase();
         final String ytCMD, formatCon, path;
         Path pathl = Paths.get(String.format("%s/%s", System.getProperty("user.home"), "daemonMusic"));
         Runtime rt = Runtime.getRuntime();
@@ -42,6 +38,9 @@ public class UrlServices {
         }
 
         proc = rt.exec(formatCon,null,new File(String.format("%s/%s",System.getProperty("user.home"),"daemonMusic")));
+        
+        if (proc.exitValue() != 0)
+            return false;
 
         return true;
     }
