@@ -1,4 +1,4 @@
-package com.daemongear.beta.domain.service;
+package com.daemongear.core.domain.service;
 
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * UrlService
  */
 public interface UrlService {
-    ResponseEntity<Void> downloadUrl(String url);
+    ResponseEntity<Void> saveUrl(String url);
     boolean downloadFile(String url);
 
     default boolean isValidUrl(Pattern pattern, Logger log, String url) {

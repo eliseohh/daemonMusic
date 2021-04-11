@@ -1,8 +1,10 @@
-package com.daemongear.beta.data.repositories;
+package com.daemongear.core.data.repositories;
 
-import com.daemongear.beta.domain.entity.UrlBody;
-import org.springframework.data.repository.CrudRepository;
+import com.daemongear.core.domain.entity.UrlBody;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UrlDAO extends CrudRepository<UrlBody, Long> {
+@Repository
+public interface UrlDAO extends ReactiveCrudRepository<UrlBody, Long> {
     boolean existsByUrl(String url);
 }

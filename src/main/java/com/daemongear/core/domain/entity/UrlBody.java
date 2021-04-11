@@ -1,44 +1,20 @@
-package com.daemongear.beta.domain.entity;
+package com.daemongear.core.domain.entity;
 
+import lombok.Data;
 import lombok.NonNull;
+import org.springframework.data.annotation.Id;
 
-
-import javax.persistence.*;
-
-@Entity
+@Data
 public class UrlBody {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NonNull
     private String url;
 
-    @Column(name = "downloaded")
+    @NonNull
+    private String videoId;
+
     private Boolean isDownloaded;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Boolean getDownloaded() {
-        return isDownloaded;
-    }
-
-    public void setDownloaded(Boolean downloaded) {
-        isDownloaded = downloaded;
-    }
 }

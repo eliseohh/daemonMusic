@@ -1,12 +1,13 @@
-package com.daemongear.beta.domain.service.impl;
+package com.daemongear.core.domain.service.impl;
 
-import com.daemongear.beta.data.repositories.UrlDAO;
-import com.daemongear.beta.domain.service.UrlService;
-import com.daemongear.beta.domain.entity.UrlBody;
+import com.daemongear.core.data.repositories.UrlDAO;
+import com.daemongear.core.domain.entity.UrlBody;
+import com.daemongear.core.domain.service.UrlService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +28,12 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
-    public ResponseEntity<Void> downloadUrl(String url) {
+    @Transactional
+    public ResponseEntity<Void> saveUrl(String url) {
         ResponseEntity<Void> responseEntity = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         Pattern p = Pattern.compile(YOUTUBE_PATTERN);
         if (this.isValidUrl(p, log.getMessageFactory(), url)) {
-            if (this.downloadFile(url) && !urlDAO.existsByUrl(url)) {
+            if (!urlDAO.existsByUrl(url)) {
                 UrlBody urlBody = new UrlBody();
                 urlBody.setUrl(url);
                 urlDAO.save(urlBody);
@@ -62,13 +64,10 @@ public class UrlServiceImpl implements UrlService {
             proc = rt.exec(formatCon, null,
                     new File(String.format("%s/%s", System.getProperty("user.home"), "daemonMusic")));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
-        if (proc != null)
-            if (proc.exitValue() != 0)
-                return false;
 
+        return proc == null;
 
-        return true;
     }
 }
