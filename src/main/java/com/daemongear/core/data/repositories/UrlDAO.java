@@ -1,6 +1,6 @@
-package com.daemongear.beta.dao;
+package com.daemongear.beta.data.repositories;
 
-import com.daemongear.beta.dto.UrlBody;
+import com.daemongear.beta.domain.entity.UrlBody;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UrlDAO extends CrudRepository<UrlBody, Long> {

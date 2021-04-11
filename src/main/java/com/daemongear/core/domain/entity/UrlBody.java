@@ -1,4 +1,4 @@
-package com.daemongear.beta.dto;
+package com.daemongear.beta.domain.entity;
 
 import lombok.NonNull;
 
